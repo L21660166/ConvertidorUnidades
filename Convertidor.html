@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="es"></html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Convertidor de Unidades</title>
+    <style>
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f8ff;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            animation: fadeIn 1s ease;
+        }
+        .container:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+        }
+        h1 {
+            color: #a456fc;
+        }
+        label {
+            display: block;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+        input, select {
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            width: calc(100% - 22px);
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        input:focus, select:focus {
+            border-color: #6a5acd;
+            box-shadow: 0 0 5px rgba(106, 90, 205, 0.5);
+            transform: scale(1.02);
+        }
+        .result {
+            margin-top: 20px;
+            font-size: 1.2em;
+            color: #6a5acd;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Convertidor de Unidades</h1>
+        <label for="inputValue">Valor a convertir:</label>
+        <input type="number" id="inputValue" placeholder="Ingresa el valor">
+        
+        <label for="inputUnit">Unidad de entrada:</label>
+        <select id="inputUnit">
+            <option value="metros">Metros</option>
+            <option value="kilometros">Kilómetros</option>
+            <option value="millas">Millas</option>
+        </select>
+        
+        <label for="outputUnit">Unidad de salida:</label>
+        <select id="outputUnit">
+            <option value="metros">Metros</option>
+            <option value="kilometros">Kilómetros</option>
+            <option value="millas">Millas</option>
+        </select>
+        
+        <div class="result" id="result"></div>
+    </div>
+
+    <script>
+        const inputValue = document.getElementById('inputValue');
+        const inputUnit = document.getElementById('inputUnit');
+        const outputUnit = document.getElementById('outputUnit');
+        const result = document.getElementById('result');
+
+        inputValue.addEventListener('input', convertir);
+        inputUnit.addEventListener('change', convertir);
+        outputUnit.addEventListener('change', convertir);
+
+        function convertir() {
+            const valor = parseFloat(inputValue.value);
+            if (isNaN(valor)) {
+                result.textContent = '';
+                return;
+            }
+
+            const entrada = inputUnit.value;
+            const salida = outputUnit.value;
+            let metros;
+
+            // Convertir entrada a metros
+            if (entrada === 'metros') {
+                metros = valor;
+            } else if (entrada === 'kilometros') {
+                metros = valor * 1000;
+            } else if (entrada === 'millas') {
+                metros = valor * 1609.34;
+            }
+
+            // Convertir metros a salida
+            let valorSalida;
+            if (salida === 'metros') {
+                valorSalida = metros;
+            } else if (salida === 'kilometros') {
+                valorSalida = metros / 1000;
+            } else if (salida === 'millas') {
+                valorSalida = metros / 1609.34;
+            }
+
+            result.style.opacity = 0;
+            result.style.transform = 'translateY(-10px)';
+            setTimeout(() => {
+                result.textContent = `Resultado: ${valorSalida.toFixed(2)} ${salida}`;
+                result.style.opacity = 1;
+                result.style.transform = 'translateY(0)';
+            }, 300);
+        }
+    </script>
+</body>
+</html>
